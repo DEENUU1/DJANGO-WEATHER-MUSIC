@@ -1,10 +1,17 @@
 from django.shortcuts import render
-from . import spotify, weather, playlists
+from . import spotify, weather, playlists, localization
 from django.contrib import messages
-from random import choice
+import random
 
 
 def main_view(request):
+    # geolocation
+    ip_address = localization.get_ip(request)
+
+    if request.method == 'POST':
+        city_name = request.POST['city']
+    else:
+        city_name = localization.geolocation(ip_address)
 
     # Spotify API configuration
     token = spotify.get_token()
@@ -18,16 +25,14 @@ def main_view(request):
     weather_desc = ""
     weather_icon = ""
 
-    city_name = None
-    if request.method == 'POST':
-        city_name = request.POST['city']
+    if city_name:
         try:
             weather.get_weather(city_name)
             weather_temp, weather_desc, weather_icon = weather.get_weather(city_name)
 
             for weather_key in playlists.WEATHER_PLAYLISTS.keys():
                 if weather_key in weather_desc:
-                    playlist_id = choice(playlists.WEATHER_PLAYLISTS[weather_key])[1]
+                    playlist_id = random.choice(playlists.WEATHER_PLAYLISTS[weather_key])[1]
                     playlist_title, playlist_url, playlist_image = spotify.search_playlist(token, playlist_id)
 
         except TypeError:
