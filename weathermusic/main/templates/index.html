@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>WEATHER MUSIC</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="city" placeholder="Podaj lokalizację">
+    <button type="submit">Szukaj</button>
+</form>
+
+
+<h1>{{weather_city}}</h1>
+  <img src="http://openweathermap.org/img/wn/{{weather_icon}}@2x.png" class="card-img-top" alt="...">
+    <ul>
+        <li>Dziś jest: {{weather_desc}}</li>
+        <li>Temperatura: {{weather_temp|floatformat:0}}</li>
+    </ul>
+
+<h2>{{playlist_title}}</h2>
+<img src="{{playlist_image}}"/></br>
+<a href="{{playlist_url}}">Zobacz na spotify</a>
+
+
+</body>
+</html>
