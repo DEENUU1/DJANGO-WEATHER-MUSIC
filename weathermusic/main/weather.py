@@ -17,8 +17,12 @@ def get_weather(localization):
 
     if result.status_code == 200:
         weather_temp = json_result['main']['temp']
+        weather_feels = json_result['main']['feels_like']  # new
+        weather_max = json_result['main']['temp_max']  # new
+        weather_min = json_result['main']['temp_min']  # new
+        wind_speed = json_result['wind']['speed']  # new
         weather_desc = json_result['weather'][0]['description']
         weather_icon = json_result['weather'][0]['icon']
-        return weather_temp, weather_desc, weather_icon
+        return weather_temp, weather_desc, weather_icon, weather_feels, weather_max, weather_min, wind_speed
     else:
         print('Nie działa')

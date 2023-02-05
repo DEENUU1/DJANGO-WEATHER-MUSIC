@@ -9,7 +9,7 @@
 
 {% include "navbar.html" %}
 
-<body>
+<body style="background-color:grey">
 
 
 
@@ -24,7 +24,11 @@
   <img src="http://openweathermap.org/img/wn/{{weather_icon}}@2x.png">
     <ul>
         <li>Dziś jest: {{weather_desc}}</li>
-        <li>Temperatura: {{weather_temp|floatformat:0}}</li>
+        <li>Temperatura: {{weather_temp|floatformat:0}}<sup>o</sup></li>
+        <li>Temperatura odczuwalna: {{weather_feels|floatformat:0}}<sup>o</sup></li>
+        <li>Temperatura maksymalna: {{weather_max|floatformat:0}}<sup>o</sup></li>
+        <li>Temperatura minimalna: {{weather_min|floatformat:0}}<sup>o</sup></li>
+        <li>Prędkość wiatru: {{wind_speed|floatformat:0}} km/h </li>
     </ul>
 
 <h2>{{playlist_title}}</h2>
