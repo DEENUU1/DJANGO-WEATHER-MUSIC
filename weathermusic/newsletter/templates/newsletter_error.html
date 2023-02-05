@@ -11,17 +11,9 @@
 
 <body>
 
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" value="Submit">Usuń subskrypcję</button>
-</form>
+<h1> Twoja rejestracja się nie powiodła</h1>
+<p>Spróbuj ponownie jeszcze raz.</p>
 
-{% for message in messages %}
-        <div class="messages">
-            <p>{{message}}</p>
-        </div>
-{% endfor %}
 
 
 </body>

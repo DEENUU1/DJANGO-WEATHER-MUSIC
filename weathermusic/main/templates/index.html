@@ -12,24 +12,36 @@
 <body style="background-color:grey">
 
 
+<div class="d-flex h-100">
+  <div class="align-self-center mx-auto my-3">
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group d-flex">
+        <input type="text" class="form-control flex-grow-1" name="city" placeholder="Podaj lokalizację">
+        <button type="submit" class="btn btn-success ml-2">Szukaj</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="city" placeholder="Podaj lokalizację">
-    <button type="submit">Szukaj</button>
-</form>
+<div class="d-flex justify-content-center">
+<div class="card" style="width:400px; background-color: white;">
+    <img class="card-img-top mx-auto" src="http://openweathermap.org/img/wn/{{weather_icon}}@2x.png" style="width:50%">
+    <div class="card-body">
+      <h4 class="card-title" style="text-transform: capitalize;">{{weather_city}}</h4>
+      <h5 class="card-title">Aktualna temperatura: {{weather_temp|floatformat:0}}<sup>o</sup></h5>
+      <p class="card-text">
+          <ul class="list-group">
+            <li class="list-group-item">Temperatura odczuwalna: {{weather_feels|floatformat:0}}<sup>o</sup></li>
+            <li class="list-group-item">Temperatura maksymalna: {{weather_max|floatformat:0}}<sup>o</sup></li>
+            <li class="list-group-item">Temperatura minimalna: {{weather_min|floatformat:0}}<sup>o</sup></li>
+            <li class="list-group-item">Prędkość wiatru: {{wind_speed|floatformat:0}} km/h </li>
+          </ul>
+      </p>
+    </div>
+</div>
+</div>
 
-
-<h1>{{weather_city}}</h1>
-  <img src="http://openweathermap.org/img/wn/{{weather_icon}}@2x.png">
-    <ul>
-        <li>Dziś jest: {{weather_desc}}</li>
-        <li>Temperatura: {{weather_temp|floatformat:0}}<sup>o</sup></li>
-        <li>Temperatura odczuwalna: {{weather_feels|floatformat:0}}<sup>o</sup></li>
-        <li>Temperatura maksymalna: {{weather_max|floatformat:0}}<sup>o</sup></li>
-        <li>Temperatura minimalna: {{weather_min|floatformat:0}}<sup>o</sup></li>
-        <li>Prędkość wiatru: {{wind_speed|floatformat:0}} km/h </li>
-    </ul>
 
 <h2>{{playlist_title}}</h2>
 <img src="{{playlist_image}}"/></br>

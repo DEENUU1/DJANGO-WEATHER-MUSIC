@@ -2,40 +2,50 @@ from django.shortcuts import render, redirect
 from .forms import RegisterForm, DeleteForm
 from .models import UserInfo
 from django.contrib import messages
+import os
+from dotenv import load_dotenv
+from mailerlite import MailerLiteApi
+
+
+load_dotenv()
 
 # This view is displaying form to register for newsletter
 
 
 def register_view(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'newsletter_successfully.html')
-    else:
-        form = RegisterForm()
-    return render(request,
-                  'newsletter_register.html',
-                  {'form': form})
+
+        email = request.POST['email']
+        name = request.POST['name']
+
+        mailchimpClient = Client()
+        mailchimpClient.set_config({
+            "api_key": os.getenv('MAILCHIMP_API_KEY'),
+        })
+
+        userInfo = {
+            "email_address": email,
+            "status": "subscribed",
+            "merge_fields": {
+                "FNAME": name,
+            }
+        }
+
+        list_id = os.getenv('LIST_ID')
+        try:
+            mailchimpClient.lists.add_list_member(list_id, userInfo)
+            return redirect("newsletter:success")
+        except ApiClientError:
+            return redirect("newsletter:error")
+
+    return render(request, "newsletter_register.html")
 
 
-# This view is displaying form to delete newsletter
+def success(request):
+    return render(request, "newsletter_successfully.html")
 
 
-def delete_view(request):
-    if request.method == 'POST':
-        form = DeleteForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            try:
-                user = UserInfo.objects.get(email=email)
-                user.delete()
-                return render(request, 'newsletter_deleted.html')
-            except UserInfo.DoesNotExist:
-                messages.error(request,
-                               'Podany adress email nie istnieje')
-    else:
-        form = DeleteForm()
-    return render(request,
-                  'newsletter_delete.html',
-                  {'form': form})
+def error(request):
+    return render(request, "newsletter_error.html")
+
+
