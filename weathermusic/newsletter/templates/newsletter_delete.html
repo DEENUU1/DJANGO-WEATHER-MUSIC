@@ -14,12 +14,15 @@
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
-    <button type="submit" value="Submit">Dołącz do newslettera</button>
+    <button type="submit" value="Submit">Usuń subskrypcję</button>
 </form>
 
-    <a href="{% url 'newsletter:delete' %}">
-        <p>Jeśli chcesz anulować subskrypcję kliknij link</p>
-    </a>
+{% for message in messages %}
+        <div class="messages">
+            <p>{{message}}</p>
+        </div>
+{% endfor %}
+
 
 </body>
 

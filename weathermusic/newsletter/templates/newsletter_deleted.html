@@ -11,15 +11,9 @@
 
 <body>
 
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" value="Submit">Dołącz do newslettera</button>
-</form>
+<h1>Twój adress email został usunięty z subskrypcji</h1>
+<p>Przykro nam, że to już koniec...</p>
 
-    <a href="{% url 'newsletter:delete' %}">
-        <p>Jeśli chcesz anulować subskrypcję kliknij link</p>
-    </a>
 
 </body>
 
