@@ -11,15 +11,12 @@
 
 <body>
 
-<form method="post">
+<form method="post" action="{% url 'newsletter:register' %}">
     {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit" value="Submit">Dołącz do newslettera</button>
+    <input type="email" name="email" placeholder="Adres email">
+    <input type="text" name="name" placeholder="Imię">
+    <button class="btn btn-secondary" type="submit">Dołącz do newslettera</button>
 </form>
-
-    <a href="{% url 'newsletter:delete' %}">
-        <p>Jeśli chcesz anulować subskrypcję kliknij link</p>
-    </a>
 
 </body>
 

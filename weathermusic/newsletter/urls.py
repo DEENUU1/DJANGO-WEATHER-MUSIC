@@ -7,5 +7,6 @@ app_name = 'newsletter'
 
 urlpatterns = [
     path('', views.register_view, name='register'),
-    path('delete/', views.delete_view, name='delete')
+    path('success', views.success, name='success'),
+    path('error', views.error, name='error')
 ]
