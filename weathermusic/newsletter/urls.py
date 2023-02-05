@@ -6,5 +6,5 @@ app_name = 'newsletter'
 
 
 urlpatterns = [
-    path('', views.newsletter_view, name='newsletter')
+    path('', views.register_view, name='register')
 ]

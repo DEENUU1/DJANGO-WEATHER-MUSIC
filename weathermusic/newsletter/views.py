@@ -4,7 +4,7 @@ from .forms import NewsLetterForm
 
 # This view is displaying form to register for newsletter
 
-def newsletter_view(request):
+def register_view(request):
     if request.method == 'POST':
         form = NewsLetterForm(request.POST)
         if form.is_valid():
