@@ -42,7 +42,6 @@ def search_playlist(token, playlist_id):
 
     result = get(url, headers=headers, params=params)
     json_result = json.loads(result.content)
-    print(json_result)
 
     if result.status_code == 200:
         playlist_title = json_result['name']

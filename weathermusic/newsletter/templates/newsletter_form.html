@@ -8,12 +8,20 @@
 </head>
 
 {% include "navbar.html" %}
+{% load crispy_forms_tags %}
 
 <body>
 
-<h1> Dziękujemy za rejestrację w naszym newsletterze</h1>
-<p>Na twój email została wysłana wiadomość w celu weryfikacji.</p>
-
+<div class="content-section">
+  <form method="POST">
+    {% csrf_token %}
+    {{ form|crispy  }}
+    {{ form.media  }}
+    <div class="form-group">
+      <button class="btn btn-outline-info" type="submit">Send</button>
+    </div>
+  </form>
+</div>
 
 </body>
 

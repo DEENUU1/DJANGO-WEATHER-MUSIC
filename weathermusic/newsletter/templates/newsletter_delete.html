@@ -11,9 +11,16 @@
 
 <body>
 
-<h1> Twoja rejestracja się nie powiodła</h1>
-<p>Spróbuj ponownie jeszcze raz.</p>
+<form method="post" action="{% url 'newsletter:delete' %}">
+    {% csrf_token %}
+    <input type="email" name="email" placeholder="Adres email">
+    <button class="btn btn-secondary" type="submit">Zrezygnuj z subskrypcji</button>
+</form>
 
+
+{% for message in messages %}
+    {{message}}
+{% endfor %}
 
 
 </body>
