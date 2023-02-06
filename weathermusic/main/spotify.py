@@ -42,8 +42,9 @@ def search_playlist(token, playlist_id):
 
     result = get(url, headers=headers, params=params)
     json_result = json.loads(result.content)
+
     if result.status_code == 200:
-        playlist_title = json_result['description']
+        playlist_title = json_result['name']
         playlist_url = json_result['external_urls']['spotify']
         playlist_image = json_result['images'][0]['url']
         return playlist_title, playlist_url, playlist_image

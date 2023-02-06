@@ -24,11 +24,15 @@ def main_view(request):
     weather_temp = ""
     weather_desc = ""
     weather_icon = ""
+    weather_feels = ""
+    weather_max = ""
+    weather_min = ""
+    wind_speed = ""
 
     if city_name:
         try:
             weather.get_weather(city_name)
-            weather_temp, weather_desc, weather_icon = weather.get_weather(city_name)
+            weather_temp, weather_desc, weather_icon, weather_min, weather_max, weather_feels, wind_speed = weather.get_weather(city_name)
 
             for weather_key in playlists.WEATHER_PLAYLISTS.keys():
                 if weather_key in weather_desc:
@@ -48,7 +52,12 @@ def main_view(request):
         'weather_temp': weather_temp,
         'weather_desc': weather_desc,
         'weather_icon': weather_icon,
+        "weather_feels": weather_feels,
+        "weather_max": weather_max,
+        "weather_min": weather_min,
+        "wind_speed": wind_speed,
     }
 
-    return render(request, 'index.html',
+    return render(request,
+                  'index.html',
                   context)
