@@ -8,20 +8,20 @@
 </head>
 
 {% include "navbar.html" %}
+{% load crispy_forms_tags %}
 
 <body>
 
-<form method="post" action="{% url 'newsletter:delete' %}">
+<div class="content-section">
+  <form method="POST">
     {% csrf_token %}
-    <input type="email" name="email" placeholder="Adres email">
-    <button class="btn btn-secondary" type="submit">Zrezygnuj z subskrypcji</button>
-</form>
-
-
-{% for message in messages %}
-    {{message}}
-{% endfor %}
-
+    {{ form|crispy  }}
+    {{ form.media  }}
+    <div class="form-group">
+      <button class="btn btn-outline-info" type="submit">Send</button>
+    </div>
+  </form>
+</div>
 
 </body>
 

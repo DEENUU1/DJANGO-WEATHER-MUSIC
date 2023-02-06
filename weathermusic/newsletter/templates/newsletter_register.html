@@ -19,6 +19,11 @@
     <button class="btn btn-secondary" type="submit">Dołącz do newslettera</button>
 </form>
 
+{% for message in messages %}
+    {{message}}
+{% endfor %}
+
+
 <a href="{% url 'newsletter:delete' %}">Usuń subskrypcję</a>
 
 </body>

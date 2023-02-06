@@ -1,51 +1,96 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, DeleteForm
+from .forms import RegisterForm, DeleteForm, NewsletterForm
 from .models import UserInfo
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
-import os
-from dotenv import load_dotenv
-from mailerlite import MailerLiteApi
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 
-load_dotenv()
+# This view works with NewsletterForm from forms.py and allows admin user to send a email
+# For all registered users
+
+@user_passes_test(lambda u: u.is_superuser)
+def send_newsletter(request):
+    if request.method == 'POST':
+        form = NewsletterForm(request.POST)
+        if form.is_valid():
+
+            # sending email function
+            subject = form.cleaned_data.get('subject')
+            receivers = form.cleaned_data.get('receivers').split(',')
+            email_message = form.cleaned_data.get('message')
+            email_list = list(UserInfo.objects.values_list('email', flat=True))
+            mail = EmailMessage(subject,
+                                email_message,
+                                settings.EMAIL_HOST_USER,
+                                email_list,
+                                bcc=receivers)
+            mail.content_subtype = 'html'
+            try:
+                mail.send()
+                print('email wysłany')
+                messages.success(request, "Wiadomość została wysłana")
+            except Exception as e:
+                print('nie udało się')
+                messages.error(request, "Nie udało się wysłać wiadomości: {}".format(e))
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+        return redirect("/")
+    form = NewsletterForm()
+    form.fields['receivers'].initial = ','.join([active.email for active in UserInfo.objects.all() if active.email])
+
+    return render(request=request,
+                  template_name='newsletter_form.html',
+                  context={'form': form})
+
 
 # This view is displaying form to register for newsletter
 
-
 def register_view(request):
-    if request.method == 'POST':
+    form = RegisterForm(request.POST)
 
-        email = request.POST['email']
-        name = request.POST['name']
+    if request.method == "POST":
 
-        mailchimpClient = Client()
-        mailchimpClient.set_config({
-            "api_key": os.getenv('MAILCHIMP_API_KEY'),
-        })
-
-        userInfo = {
-            "email_address": email,
-            "status": "subscribed",
-            "merge_fields": {
-                "FNAME": name,
-            }
-        }
-
-        list_id = os.getenv('LIST_ID')
-        try:
-            mailchimpClient.lists.add_list_member(list_id, userInfo)
-            return redirect("newsletter:success")
-        except ApiClientError:
-            return redirect("newsletter:error")
-
-    return render(request, "newsletter_register.html")
+        if UserInfo.objects.filter(email=form.data['email']).exists():
+            messages.error(request,
+                           'Ten adres email jest już podany w bazie')
+            return render(request,
+                          'newsletter_register.html',
+                          {'form': form})
+        if form.is_valid():
+            form.save()
+            messages.success(request,
+                             'Dziękujemy za rejestrację do newslettera')
+    else:
+        form = RegisterForm()
+    return render(request,
+                  'newsletter_register.html',
+                  {'form': form})
 
 
-def success(request):
-    return render(request, "newsletter_successfully.html")
+# This view allows to delete newsletter subscription
+
+def delete_view(request):
+    if request.method == "POST":
+        form = DeleteForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            try:
+                user = UserInfo.objects.get(email=email)
+                user.delete()
+                messages.success(request,
+                                 'Twoja subskrypcja została anulowana')
+            except UserInfo.DoesNotExist:
+                messages.error(request,
+                               'Ten email nie istnieje')
+    else:
+        form = DeleteForm()
+    return render(request,
+                  'newsletter_delete.html',
+                  {'form': form})
 
 
-def error(request):
-    return render(request, "newsletter_error.html")
 
 
