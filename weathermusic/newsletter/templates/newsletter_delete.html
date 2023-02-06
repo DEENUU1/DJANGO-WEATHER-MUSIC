@@ -11,9 +11,11 @@
 
 <body>
 
-<h1> Dziękujemy za rejestrację w naszym newsletterze</h1>
-<p>Na twój email została wysłana wiadomość w celu weryfikacji.</p>
-
+<form method="post" action="{% url 'newsletter:delete' %}">
+    {% csrf_token %}
+    <input type="email" name="email" placeholder="Adres email">
+    <button class="btn btn-secondary" type="submit">Zrezygnuj z subskrypcji</button>
+</form>
 
 </body>
 
