@@ -9,21 +9,33 @@
 
 {% include "navbar.html" %}
 
-<body>
+<body style="background-color: black">
 
-<form method="post" action="{% url 'newsletter:delete' %}">
-    {% csrf_token %}
-    <input type="email" name="email" placeholder="Adres email">
-    <button class="btn btn-secondary" type="submit">Zrezygnuj z subskrypcji</button>
+<div class="header" style=" margin-top: 200px; flex-direction: column; align-items:center;text-align: center">
+    <h1 style="color: white">Anuluj subskrypcję</h1>
+    <p style="color: white">Przykro nam, że chcesz anulować swoją subskrypcję. Mam nadzieję, że jeszcze się usłyszymy</p>
+</div>
+
+<form method="post" style="margin-top: 100px; margin-bottom: 450px; display: flex; justify-content: center;">
+  {% csrf_token %}
+  <div class="group" style="width: 500px; margin-left: 20px; margin-right: 20px;">
+      <div class="form-group">
+        <input type="email" name="email" class="form-control" placeholder="Twój adres email">
+      </div>
+      <button type="submit" class="btn btn-primary">Anuluj subskrypcję</button>
+
+      <div class="messages">
+        {% for message in messages %}
+        <p style="color: red;">{{message}}</p>
+        {% endfor %}
+      </div>
+
+  </div>
 </form>
 
 
-{% for message in messages %}
-    {{message}}
-{% endfor %}
-
-
 </body>
+
 
 {% include "footer.html" %}
 
