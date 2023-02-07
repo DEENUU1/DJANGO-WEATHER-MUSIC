@@ -20,13 +20,13 @@
   {% csrf_token %}
   <div class="group" style="width: 500px; margin-left: 20px; margin-right: 20px;">
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="Twoje imię">
+        <input type="text" name="name" class="form-control" placeholder="Twoje imię">
       </div>
       <div class="form-group">
         <input type="email" name="email" class="form-control" placeholder="Twój adres email">
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="Twoja lokalizacja">
+        <input type="text" name="localization" class="form-control" placeholder="Twoja lokalizacja">
       </div>
         <button type="submit" class="btn btn-primary">Dołącz do newslettera</button>
 
