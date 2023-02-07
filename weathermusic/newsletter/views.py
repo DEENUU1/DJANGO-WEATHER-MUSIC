@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
+from .mail import send_email
 
 
 # This view works with NewsletterForm from forms.py and allows admin user to send a email
@@ -49,9 +50,8 @@ def send_newsletter(request):
 # This view is displaying form to register for newsletter
 
 def register_view(request):
-    form = RegisterForm(request.POST)
-
     if request.method == "POST":
+        form = RegisterForm(request.POST)
 
         if UserInfo.objects.filter(email=form.data['email']).exists():
             messages.error(request,
@@ -63,6 +63,16 @@ def register_view(request):
             form.save()
             messages.success(request,
                              'Dziękujemy za rejestrację do newslettera')
+
+            # sending email after success registration to newsletter
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            send_email('newsletter_welcome.html',
+                       name,
+                       email)
+        else:
+            messages.error(request,
+                           'Coś poszło nie tak. Spróbuj ponownie.')
     else:
         form = RegisterForm()
     return render(request,
