@@ -9,22 +9,43 @@
 
 {% include "navbar.html" %}
 
-<body>
+<body style="background-color: black">
 
-<form method="post">
-    {% csrf_token %}
-    <input type="email" name="email" placeholder="Adres email">
-    <input type="text" name="name" placeholder="Imię">
-    <input type="text" name="localization" placeholder="Twoja lokalizacja">
-    <button class="btn btn-secondary" type="submit">Dołącz do newslettera</button>
+<div class="header" style=" margin-top: 200px; flex-direction: column; align-items:center;text-align: center">
+    <h1 style="color: white">Zapisz się do newslettera</h1>
+    <p style="color: white">Będziemy cię informować o każdej nowej zmianie oraz podsyłać cotygodniowe playlisty</p>
+</div>
+
+<form method="post" style="margin-top: 100px; margin-bottom: 350px; display: flex; justify-content: center;">
+  {% csrf_token %}
+  <div class="group" style="width: 500px; margin-left: 20px; margin-right: 20px;">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Twoje imię">
+      </div>
+      <div class="form-group">
+        <input type="email" name="email" class="form-control" placeholder="Twój adres email">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Twoja lokalizacja">
+      </div>
+        <button type="submit" class="btn btn-primary">Dołącz do newslettera</button>
+
+      <div class="messages">
+        {% for message in messages %}
+        <p style="color: red;">{{message}}</p>
+        {% endfor %}
+      </div>
+
+  </div>
 </form>
 
-{% for message in messages %}
-    {{message}}
-{% endfor %}
 
 
-<a href="{% url 'newsletter:delete' %}">Usuń subskrypcję</a>
+<div class="delete-info" style="font-size: 15px; color: white;">
+    <p>Jeśli chcesz zrezygnować subskrypcji
+    <a href="{% url 'newsletter:delete' %}">Kliknij</a>
+    </p>
+</div>
 
 </body>
 
