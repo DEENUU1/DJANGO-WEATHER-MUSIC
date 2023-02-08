@@ -22,7 +22,7 @@ class SpotifyData:
 
 class SpotifyAccess(SpotifyData):
     def _get_token(self):
-        auth_string = self.CLIENT_ID + ":" + self.CLIENT_SECRET
+        auth_string = f'{self.CLIENT_ID}:{self.CLIENT_SECRET}'
         auth_bytes = auth_string.encode('utf-8')
         auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
 
@@ -37,13 +37,18 @@ class SpotifyAccess(SpotifyData):
         token = json_result["access_token"]
         return token
 
-    def _get_auth_header(self, token):
+    @staticmethod
+    def _get_auth_header(token):
         return {"Authorization": "Bearer " + token, 'Content-Type': 'application/json'}
 
 
 # This class is searching for the playlist based on the playlist id
 
 class SpotifyCategory(SpotifyAccess):
+    def __init__(self, playlist_title, playlist_url, playlist_image):
+        self.playlist_title = playlist_title
+        self.playlist_url = playlist_url
+        self.playlist_image = playlist_image
 
     # This function returns the playlist info based on the playlist id
     # Playlist description, url and image
