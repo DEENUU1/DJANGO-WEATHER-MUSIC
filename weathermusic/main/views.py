@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from . import spotify, weather, playlists, localization
+from . import weather, playlists, localization
+from .spotify import SpotifyCategory, SpotifyAccess
 from django.contrib import messages
 import random
 
@@ -14,7 +15,10 @@ def main_view(request):
         city_name = localization.geolocation(ip_address)
 
     # Spotify API configuration
-    token = spotify.get_token()
+    spotify_api = SpotifyAccess()
+    token = spotify_api._get_token()
+    spotify_func = SpotifyCategory()
+
 
     # Weather API configuration
 
@@ -34,10 +38,7 @@ def main_view(request):
             weather.get_weather(city_name)
             weather_temp, weather_desc, weather_icon, weather_min, weather_max, weather_feels, wind_speed = weather.get_weather(city_name)
 
-            for weather_key in playlists.WEATHER_PLAYLISTS.keys():
-                if weather_key in weather_desc:
-                    playlist_id = random.choice(playlists.WEATHER_PLAYLISTS[weather_key])[1]
-                    playlist_title, playlist_url, playlist_image = spotify.search_playlist(token, playlist_id)
+            playlist_title, playlist_url, playlist_image = spotify_func.random_playlist(token, weather_desc)
 
         except TypeError:
             messages.error(request, 'Podaj poprawną lokalizację')
