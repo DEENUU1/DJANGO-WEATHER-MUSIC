@@ -4,16 +4,18 @@ from .spotify import SpotifyCategory, SpotifyAccess
 from django.contrib import messages
 import random
 from .weather import Weather
+from .localization import Geolocation
 
 
 def main_view(request):
     # geolocation
-    ip_address = localization.get_ip(request)
+    geolocation = Geolocation()
+    ip_address = geolocation.get_ipaddress(request)
 
     if request.method == 'POST':
         city_name = request.POST['city']
     else:
-        city_name = localization.geolocation(ip_address)
+        city_name = geolocation.return_location(ip_address)
 
     # Spotify API configuration
     spotify_api = SpotifyAccess()
