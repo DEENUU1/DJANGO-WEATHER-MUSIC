@@ -3,6 +3,7 @@ from . import weather, playlists, localization
 from .spotify import SpotifyCategory, SpotifyAccess
 from django.contrib import messages
 import random
+from .weather import Weather
 
 
 def main_view(request):
@@ -33,15 +34,24 @@ def main_view(request):
     weather_min = ""
     wind_speed = ""
 
+
     if city_name:
         try:
-            weather.get_weather(city_name)
-            weather_temp, weather_desc, weather_icon, weather_min, weather_max, weather_feels, wind_speed = weather.get_weather(city_name)
+            weather = Weather()
+            weather_info = weather.get_weather(city_name)
+
+            weather_desc = weather_info.desc
+            weather_temp = weather_info.temp
+            weather_icon = weather_info.icon
+            weather_feels = weather_info.feels_like
+            weather_max = weather_info.max_temp
+            weather_min = weather_info.min_temp
+            wind_speed = weather_info.wind_speed
 
             playlist_title, playlist_url, playlist_image = spotify_func.random_playlist(token, weather_desc)
 
         except TypeError:
-            messages.error(request, 'Podaj poprawną lokalizację')
+            messages.error(request, "Podaj poprawną lokalizację")
         except ValueError:
             messages.error(request, 'Podaj poprawną lokalizację')
 

@@ -45,10 +45,6 @@ class SpotifyAccess(SpotifyData):
 # This class is searching for the playlist based on the playlist id
 
 class SpotifyCategory(SpotifyAccess):
-    def __init__(self, playlist_title, playlist_url, playlist_image):
-        self.playlist_title = playlist_title
-        self.playlist_url = playlist_url
-        self.playlist_image = playlist_image
 
     # This function returns the playlist info based on the playlist id
     # Playlist description, url and image
