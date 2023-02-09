@@ -1,10 +1,10 @@
 from django.urls import path
-from . import views
+from .views import MainView
 
 
 app_name = 'weather_music'
 
 
 urlpatterns = [
-    path('', views.main_view, name='main')
+    path('', MainView.as_view(), name='main')
 ]
