@@ -65,7 +65,7 @@ class SpotifyCategory(SpotifyAccess):
         else:
             raise Exception("Nie działa")
 
-    def random_playlist(self, token, weather_desc):
+    async def random_playlist(self, token, weather_desc):
         for weather_key in playlists.WEATHER_PLAYLISTS.keys():
             if weather_key in weather_desc:
                 playlist_id = random.choice(playlists.WEATHER_PLAYLISTS[weather_key])[1]
