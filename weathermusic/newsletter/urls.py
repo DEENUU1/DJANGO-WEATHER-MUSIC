@@ -1,12 +1,12 @@
 from django.urls import path
 from . import views
-
+from .views import SignUpView, DeleteUserView, SendNewsletterView
 
 app_name = 'newsletter'
 
 
 urlpatterns = [
-    path('', views.register_view, name='register'),
-    path('delete/', views.delete_view, name='delete'),
-    path('send/', views.send_newsletter, name='send'),
+    path('', SignUpView.as_view(), name='register'),
+    path('delete/', DeleteUserView.as_view(), name='delete'),
+    path('send/', SendNewsletterView.as_view(), name='send'),
 ]
