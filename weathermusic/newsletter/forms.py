@@ -4,7 +4,7 @@ from django import forms
 from tinymce.widgets import TinyMCE
 
 
-# This form allows admin user to create email content
+# subject, list of receivers and message to send a newsletter
 
 class NewsletterForm(forms.Form):
     subject = forms.CharField()
@@ -12,7 +12,7 @@ class NewsletterForm(forms.Form):
     message = forms.CharField(widget=TinyMCE(), label="Content")
 
 
-# This form works with UserInfo model and allows user to register for newsletter
+# Getting user's data to register user to newsletter
 
 class RegisterForm(ModelForm):
 
@@ -21,7 +21,7 @@ class RegisterForm(ModelForm):
         fields = ('email', 'name', 'localization')
 
 
-# This form allows to delete user from newsletter
+# Form to delete user from newsletter
 
 class DeleteForm(forms.Form):
     email = forms.EmailField()

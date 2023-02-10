@@ -3,13 +3,15 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 
-# This function allows to send first welcome email after registration to newsletter
+# Email subject is static and can be modified only here
 
-def send_email(template_name, username, email):
+def send_email(template_name: str, username: str, email: str):
+    """ This function allows to send welcome email for registered users """
+
     template = render_to_string(template_name,
                                 {'username': username})
 
-    subject_email = 'Dziękujemy za rejestrację do newsletteru.'
+    subject_email = 'Dziękujemy za rejestrację do newslettera.'
 
     email = EmailMessage(
         subject_email,
@@ -17,5 +19,6 @@ def send_email(template_name, username, email):
         settings.EMAIL_HOST_USER,
         [email],
     )
+
     email.fail_silently = False
     email.send()
