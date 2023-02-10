@@ -10,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 class SendNewsletterView(LoginRequiredMixin, UserPassesTestMixin, View):
+    """ This view allows admin user to send newsletter for all registered users """
+
     form_class = NewsletterForm
     template_name = 'newsletter_form.html'
 
@@ -52,6 +54,8 @@ class SendNewsletterView(LoginRequiredMixin, UserPassesTestMixin, View):
 
 
 class SignUpView(View):
+    """ This view allows user to register for newsletter """
+
     form_class = RegisterForm
     template_name = 'newsletter_register.html'
 
@@ -88,6 +92,8 @@ class SignUpView(View):
 
 
 class DeleteUserView(View):
+    """ This view allows user to delete subscription in newsletter """
+
     template_name = 'newsletter_delete.html'
     form_class = DeleteForm
 

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 load_dotenv()
 
+
 @dataclass
 class WeatherInfo:
     temp: int
@@ -19,6 +20,9 @@ class WeatherInfo:
 
 
 class Weather:
+    """ This class allows to work with OpenWeatherMap API to return weather data
+        based on the user localization """
+
     def __init__(self):
         self.api_key = os.getenv('WEATHER_KEY')
 
