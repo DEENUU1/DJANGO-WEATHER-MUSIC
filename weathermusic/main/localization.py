@@ -4,17 +4,18 @@ import os
 import json
 
 load_dotenv()
-API_KEY = os.getenv('GEOLOCATION_KEY')
-
-# This function returns user ip address
 
 
 class Geolocation:
+    """ This class allows to get user localization based on the user's ip address """
+
     def __init__(self):
         self.api_key = os.getenv('GEOLOCATION_KEY')
 
     @staticmethod
-    def get_ipaddress(request):
+    def get_ipaddress(request) -> str:
+        """ Method that is getting user's ip address"""
+
         ip_address = request.META.get('HTTP_X_FORWARDER_FOR')
         if ip_address:
             ip = ip_address.split(',')[0]
@@ -23,10 +24,9 @@ class Geolocation:
 
         return ip
 
-    # This function return user geolocation based on ip address
+    def return_location(self, ip_address: str) -> str:
+        """ Method that is returning city name based on the IP """
 
-
-    def return_location(self, ip_address):
         base_url = f'https://ipgeolocation.abstractapi.com/v1/?api_key={self.api_key}'
         result = get(base_url)
         json_result = json.loads(result.content)

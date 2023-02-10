@@ -27,7 +27,9 @@ def main_view(request):
         "wind_speed": weather_info.wind_speed,
     }
 
-    return render(request, 'index.html', context)
+    return render(request,
+                  'index.html',
+                  context)
 
 
 def get_city_name(request):
@@ -44,7 +46,7 @@ def get_city_name(request):
     return city_name
 
 
-def get_weather_info(city_name, request):
+def get_weather_info(city_name: str, request):
     """ This function return the weather info for specify city
         If city name is incorrect it will return message error"""
 
@@ -59,7 +61,7 @@ def get_weather_info(city_name, request):
     return weather_info
 
 
-def get_playlist_info(weather_info):
+def get_playlist_info(weather_info: str):
     """ Based on the weather info it returns random playlist """
 
     spotify_api = SpotifyAccess()
