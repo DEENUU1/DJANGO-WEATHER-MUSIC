@@ -1,18 +1,24 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, DeleteForm, NewsletterForm
 from .models import UserInfo
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
+from .mail import send_email
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
-# This view works with NewsletterForm from forms.py and allows admin user to send a email
-# For all registered users
+class SendNewsletterView(LoginRequiredMixin, UserPassesTestMixin, View):
+    """ This view allows admin user to send newsletter for all registered users """
 
-@user_passes_test(lambda u: u.is_superuser)
-def send_newsletter(request):
-    if request.method == 'POST':
+    form_class = NewsletterForm
+    template_name = 'newsletter_form.html'
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def post(self, request, *args, **kwargs):
         form = NewsletterForm(request.POST)
         if form.is_valid():
 
@@ -38,59 +44,82 @@ def send_newsletter(request):
             for error in list(form.errors.values()):
                 messages.error(request, error)
         return redirect("/")
-    form = NewsletterForm()
-    form.fields['receivers'].initial = ','.join([active.email for active in UserInfo.objects.all() if active.email])
 
-    return render(request=request,
-                  template_name='newsletter_form.html',
-                  context={'form': form})
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        form.fields['receivers'].initial = ','.join([active.email for active in UserInfo.objects.all() if active.email])
+        return render(request,
+                      self.template_name,
+                      {'form': form})
 
 
-# This view is displaying form to register for newsletter
+class SignUpView(View):
+    """ This view allows user to register for newsletter """
 
-def register_view(request):
-    form = RegisterForm(request.POST)
+    form_class = RegisterForm
+    template_name = 'newsletter_register.html'
 
-    if request.method == "POST":
+    def get(self, request, *args, **kwargs):
+        form = self.form_class
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
 
         if UserInfo.objects.filter(email=form.data['email']).exists():
             messages.error(request,
-                           'Ten adres email jest już podany w bazie')
+                           'Ten email jest już zarejestrowany')
             return render(request,
                           'newsletter_register.html',
                           {'form': form})
+
         if form.is_valid():
             form.save()
+
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            send_email('newsletter_welcome.html',
+                       username,
+                       email)
             messages.success(request,
-                             'Dziękujemy za rejestrację do newslettera')
-    else:
-        form = RegisterForm()
-    return render(request,
-                  'newsletter_register.html',
-                  {'form': form})
+                             'Twoje konto zostało utworzone')
+            return redirect('weather_music:main')
+        else:
+            messages.error(request,
+                           'Nie udało się założyć konta')
+
+        return render(request, self.template_name, {'form': form})
 
 
-# This view allows to delete newsletter subscription
+class DeleteUserView(View):
+    """ This view allows user to delete subscription in newsletter """
 
-def delete_view(request):
-    if request.method == "POST":
-        form = DeleteForm(request.POST)
+    template_name = 'newsletter_delete.html'
+    form_class = DeleteForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
         if form.is_valid():
             email = form.cleaned_data['email']
+
             try:
                 user = UserInfo.objects.get(email=email)
                 user.delete()
                 messages.success(request,
-                                 'Twoja subskrypcja została anulowana')
+                                 'Usunięto konto')
+                return redirect('weather_music:main')
+
             except UserInfo.DoesNotExist:
-                messages.error(request,
-                               'Ten email nie istnieje')
-    else:
-        form = DeleteForm()
-    return render(request,
-                  'newsletter_delete.html',
-                  {'form': form})
+                messages.info(request,
+                              'To konto nie istnieje')
+        else:
+            messages.error(request, 'Usuwanie konta nie powiodło się')
 
-
-
-
+        return render(request,
+                      self.template_name,
+                      {'form': form})
