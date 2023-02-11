@@ -4,6 +4,7 @@ from .views import main_view
 from unittest.mock import MagicMock, patch
 import datetime
 from .spotify import SpotifyCategory
+from .weather import Weather
 
 
 class TestUrls(SimpleTestCase):
@@ -83,3 +84,28 @@ class TestSpotify(TestCase):
         self.assertEqual(playlist_image, 'dasd.jpg')
 
 
+class TestWeather(TestCase):
+
+    def setUp(self) -> None:
+        self.localization = "Poland"
+
+    @patch('main.weather.Weather.get_weather')
+    def test_return_weather_data(self, mock_get_weather):
+        mock_get_weather.return_value = MagicMock(
+            temp=10,
+            desc='cloud',
+            icon='cloud.png',
+            feels_like=8,
+            max_temp=12,
+            min_temp=5,
+            wind_speed=5
+        )
+        weather = Weather()
+        weather_data = weather.get_weather(self.localization)
+        self.assertEqual(weather_data.temp, 10)
+        self.assertEqual(weather_data.desc, 'cloud')
+        self.assertEqual(weather_data.icon, 'cloud.png')
+        self.assertEqual(weather_data.feels_like, 8)
+        self.assertEqual(weather_data.max_temp, 12)
+        self.assertEqual(weather_data.min_temp, 5)
+        self.assertEqual(weather_data.wind_speed, 5)
