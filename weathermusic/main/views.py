@@ -4,6 +4,7 @@ from django.contrib import messages
 from .weather import Weather
 from .localization import Geolocation
 from .news import News
+from datetime import datetime
 
 
 def main_view(request):
@@ -15,6 +16,8 @@ def main_view(request):
     playlist_info = get_playlist_info(weather_info)
     news = News()
     news_articles = news.get_news(request)
+    time = datetime.now()
+    time_format = time.strftime("%H:%M")
 
     context = {
         'playlist_title': playlist_info['playlist_title'],
@@ -29,6 +32,7 @@ def main_view(request):
         "weather_min": weather_info.min_temp,
         "wind_speed": weather_info.wind_speed,
         "news_articles": news_articles,
+        "time": time_format,
     }
 
     return render(request,
