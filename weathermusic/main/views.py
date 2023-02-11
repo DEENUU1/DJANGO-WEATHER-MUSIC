@@ -14,8 +14,7 @@ def main_view(request):
     weather_info = get_weather_info(city_name, request)
     playlist_info = get_playlist_info(weather_info)
     news = News()
-    news_articles = news.get_news()
-
+    news_articles = news.get_news(request)
 
     context = {
         'playlist_title': playlist_info['playlist_title'],

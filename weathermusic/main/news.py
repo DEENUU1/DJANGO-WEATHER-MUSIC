@@ -3,7 +3,7 @@ import json
 from dotenv import load_dotenv
 import os
 from dataclasses import dataclass
-import datetime
+from .localization import Geolocation
 
 load_dotenv()
 
@@ -21,8 +21,12 @@ class News:
     def __init__(self):
         self.api_key = os.getenv('NEWS_KEY')
 
-    def get_news(self):
-        base_url = f'https://newsapi.org/v2/top-headlines?country=pl&apiKey={self.api_key}'
+    def get_news(self, request):
+        geolocation = Geolocation()
+        ip_address = geolocation.get_ipaddress(request)
+        country_code = geolocation.return_country_code(ip_address)
+
+        base_url = f'https://newsapi.org/v2/top-headlines?country={country_code}&apiKey={self.api_key}'
         result = get(base_url)
         json_result = json.loads(result.content)
         articles = json_result['articles']
