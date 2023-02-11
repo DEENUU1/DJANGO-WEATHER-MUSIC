@@ -109,3 +109,4 @@ class TestWeather(TestCase):
         self.assertEqual(weather_data.max_temp, 12)
         self.assertEqual(weather_data.min_temp, 5)
         self.assertEqual(weather_data.wind_speed, 5)
+
