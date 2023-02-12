@@ -3,7 +3,6 @@ from .spotify import SpotifyCategory, SpotifyAccess
 from django.contrib import messages
 from .weather import Weather
 from .localization import Geolocation
-from .news import News
 from datetime import datetime
 
 
@@ -14,8 +13,6 @@ def main_view(request):
     city_name = get_city_name(request)
     weather_info = get_weather_info(city_name, request)
     playlist_info = get_playlist_info(weather_info)
-    news = News()
-    news_articles = news.get_news(request)
     time = datetime.now()
     time_format = time.strftime("%H:%M")
 
@@ -31,7 +28,6 @@ def main_view(request):
         "weather_max": weather_info.max_temp,
         "weather_min": weather_info.min_temp,
         "wind_speed": weather_info.wind_speed,
-        "news_articles": news_articles,
         "time": time_format,
     }
 
@@ -52,17 +48,6 @@ def get_city_name(request):
         city_name = geolocation.return_location(ip_address)
 
     return city_name
-
-
-# def get_news():
-#     """ This function returns 10 most popular articles
-#         based on user localization """
-#
-#     try:
-#         news = News()
-#         news_articles = news.get_news()
-#     except:
-#         pass
 
 
 def get_weather_info(city_name: str, request):
