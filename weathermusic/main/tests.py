@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, patch
 import datetime
 from .spotify import SpotifyCategory
 from .weather import Weather
+from .localization import Geolocation
 
 
 class TestUrls(SimpleTestCase):
@@ -97,3 +98,30 @@ class TestWeather(TestCase):
         self.assertEqual(weather_data.min_temp, 5)
         self.assertEqual(weather_data.wind_speed, 5)
 
+
+class TestGeolocation(TestCase):
+
+    def setUp(self) -> None:
+        self.api_key = "adsasdasdas8d8as9das89"
+        self.ip_address = '127.0.0.1'
+
+    @patch('main.localization.Geolocation.get_data')
+    def test_return_localization(self, mock_get_data):
+        mock_get_data.return_value = {
+            "city": "Warsaw",
+        }
+
+        geolocation = Geolocation()
+        geolocation_location = geolocation.return_location(self.ip_address)
+
+        self.assertEqual(geolocation_location, "Warsaw")
+
+    @patch('main.localization.Geolocation.get_data')
+    def test_return_country_code(self, mock_get_data):
+        mock_get_data.return_value = {
+            "country_code": "PL",
+        }
+        geolocation = Geolocation()
+        geolocation_location = geolocation.return_country_code(self.ip_address)
+
+        self.assertEqual(geolocation_location, "PL")
