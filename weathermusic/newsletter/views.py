@@ -4,7 +4,6 @@ from .models import UserInfo
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
-from .mail import send_email
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -73,12 +72,6 @@ class SignUpView(View):
 
         if form.is_valid():
             form.save()
-
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            send_email('newsletter_welcome.html',
-                       username,
-                       email)
             messages.success(request,
                              'Your account has been created')
             return redirect('weather_music:main')
