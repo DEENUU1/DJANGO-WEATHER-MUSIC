@@ -3,7 +3,7 @@ import json
 from dotenv import load_dotenv
 import os
 from dataclasses import dataclass
-from .localization import Geolocation
+from main.localization import Geolocation
 
 load_dotenv()
 

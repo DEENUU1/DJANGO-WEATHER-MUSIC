@@ -19,9 +19,8 @@ class MainViewTests(TestCase):
     @patch('main.views.get_city_name')
     @patch('main.views.get_weather_info')
     @patch('main.views.get_playlist_info')
-    @patch('main.views.News')
     @patch('main.views.datetime')
-    def test_main_view(self, mock_datetime, mock_news, mock_playlist_info, mock_weather_info, mock_city_name):
+    def test_main_view(self, mock_datetime, mock_playlist_info, mock_weather_info, mock_city_name):
         # mock to return city name
         mock_city_name.return_value = 'London'
         # mock to return weather data
@@ -40,18 +39,6 @@ class MainViewTests(TestCase):
             'playlist_url': 'https://londoncloudy.com',
             'playlist_image': 'cloudy.jpg'
         }
-        # mock to return news data
-        mock_news.return_value = MagicMock(
-            get_news=MagicMock(return_value=[{
-                'title': 'News article 1',
-                'url': 'https://news.com/1',
-                'img_url': 'news1.jpg'
-            }, {
-                'title': 'News article 2',
-                'url': 'https://news.com/2',
-                'img_url': 'news2.jpg'
-            }])
-        )
         # mock to return user local time
         mock_datetime.now.return_value = datetime.datetime(2023, 2, 11, 11, 0)
 
