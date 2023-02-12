@@ -29,8 +29,8 @@
         <form method="post">
             {% csrf_token %}
             <div class="form-group d-flex">
-                <input type="text" class="form-control flex-grow-1" name="city" placeholder="Podaj lokalizację">
-                <button type="submit" class="btn btn-success ml-2">Szukaj</button>
+                <input type="text" class="form-control flex-grow-1" name="city" placeholder="Choose your localization">
+                <button type="submit" class="btn btn-success ml-2">Search</button>
             </div>
         </form>
     </div>
@@ -54,16 +54,16 @@
                     <div class="d-flex">
                         <div class="temp-details flex-grow-1">
                             <p class="my-1">
-                                <span>Prędkość wiatru: {{wind_speed|floatformat:0}} km/h  </span>
+                                <span>Wind speed: {{wind_speed|floatformat:0}} km/h  </span>
                             </p>
                             <p class="my-1">
-                                <span>Temperatura odczuwalna: {{weather_feels|floatformat:0}}&deg; C   </span>
+                                <span>Sensed temperature: {{weather_feels|floatformat:0}}&deg; C   </span>
                             </p>
                             <p class="my-1">
-                                <span>Temperatura maksymalna: {{weather_max|floatformat:0}}&deg; C   </span>
+                                <span>Maximum temperature: {{weather_max|floatformat:0}}&deg; C   </span>
                             </p>
                             <p class="my-1">
-                                <span>Temperatura minimalna: {{weather_min|floatformat:0}}&deg; C   </span>
+                                <span>Minimum temperature: {{weather_min|floatformat:0}}&deg; C   </span>
                             </p>
                         </div>
                         <div>

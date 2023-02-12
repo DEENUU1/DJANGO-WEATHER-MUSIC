@@ -12,23 +12,23 @@
 <body style="background-color: black">
 
 <div class="header" style=" margin-top: 200px; flex-direction: column; align-items:center;text-align: center">
-    <h1 style="color: white">Zapisz się do newslettera</h1>
-    <p style="color: white">Będziemy cię informować o każdej nowej zmianie oraz podsyłać cotygodniowe playlisty</p>
+    <h1 style="color: white">Subscribe to the newsletter</h1>
+    <p style="color: white">We will inform you about any new changes and send you weekly playlists</p>
 </div>
 
 <form method="post" style="margin-top: 100px; margin-bottom: 350px; display: flex; justify-content: center;">
   {% csrf_token %}
   <div class="group" style="width: 500px; margin-left: 20px; margin-right: 20px;">
       <div class="form-group">
-        <input type="text" name="name" class="form-control" placeholder="Twoje imię">
+        <input type="text" name="name" class="form-control" placeholder="Your name">
       </div>
       <div class="form-group">
-        <input type="email" name="email" class="form-control" placeholder="Twój adres email">
+        <input type="email" name="email" class="form-control" placeholder="Your email address">
       </div>
       <div class="form-group">
-        <input type="text" name="localization" class="form-control" placeholder="Twoja lokalizacja">
+        <input type="text" name="localization" class="form-control" placeholder="Your localization">
       </div>
-        <button type="submit" class="btn btn-primary">Dołącz do newslettera</button>
+        <button type="submit" class="btn btn-primary">Join the newsletter</button>
 
       <div class="messages">
         {% for message in messages %}
@@ -42,8 +42,8 @@
 
 
 <div class="delete-info" style="font-size: 15px; color: white;">
-    <p>Jeśli chcesz zrezygnować subskrypcji
-    <a href="{% url 'newsletter:delete' %}">Kliknij</a>
+    <p>If you want to unsubscribe
+    <a href="{% url 'newsletter:delete' %}">Link</a>
     </p>
 </div>
 

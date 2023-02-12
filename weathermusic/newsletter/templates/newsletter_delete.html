@@ -12,17 +12,17 @@
 <body style="background-color: black">
 
 <div class="header" style=" margin-top: 200px; flex-direction: column; align-items:center;text-align: center">
-    <h1 style="color: white">Anuluj subskrypcję</h1>
-    <p style="color: white">Przykro nam, że chcesz anulować swoją subskrypcję. Mam nadzieję, że jeszcze się usłyszymy</p>
+    <h1 style="color: white">Cancel your subscription</h1>
+    <p style="color: white">We're sorry you want to cancel your subscription. I hope we hear from you again</p>
 </div>
 
 <form method="post" style="margin-top: 100px; margin-bottom: 450px; display: flex; justify-content: center;">
   {% csrf_token %}
   <div class="group" style="width: 500px; margin-left: 20px; margin-right: 20px;">
       <div class="form-group">
-        <input type="email" name="email" class="form-control" placeholder="Twój adres email">
+        <input type="email" name="email" class="form-control" placeholder="Your email">
       </div>
-      <button type="submit" class="btn btn-primary">Anuluj subskrypcję</button>
+      <button type="submit" class="btn btn-primary">Cancel your subscription</button>
 
       <div class="messages">
         {% for message in messages %}
