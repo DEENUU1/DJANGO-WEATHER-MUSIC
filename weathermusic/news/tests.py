@@ -1,3 +1,10 @@
-from django.test import TestCase
+from django.test import SimpleTestCase
+from django.urls import resolve, reverse
+from .views import news_list
 
-# Create your tests here.
+
+class TestUrls(SimpleTestCase):
+
+    def test_main_url_resolve(self):
+        url = reverse('news:news')
+        self.assertEqual(resolve(url).func, news_list)
