@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'newsletter',
+    'news',
     'crispy_forms',
     'tinymce',
 
