@@ -68,6 +68,13 @@
 {% include "navbar.html" %}
 <body>
 
+<div class="header" style=" margin-top: 50px; flex-direction: column; align-items:center;text-align: center">
+    <h1 style="color: white">The most popular news from your country</h1>
+    <h4 style="color: white">Stay up to date with the world</h4>
+</div>
+
+
+
 <!-- NEWS -->
 
 <section class="wrapper">
@@ -77,7 +84,7 @@
                 <div class="row">
                     {% for article in news_articles %}
                     <div class="col-xs-12 col-sm-4">
-                        <div class="card-news">
+                        <div class="card-news" style="display: flex; flex-direction: column;">
                             <a class="img-card" href="{{ article.url }}"><img src="{{ article.image }}"/></a>
                             <div class="card-content">
                                 <h4 class="card-title">{{ article.title }}</h4>
