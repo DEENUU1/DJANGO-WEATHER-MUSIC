@@ -1,76 +1,19 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <title>WEATHER MUSIC | NEWS</title>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
+    <link rel="stylesheet" href="{% static 'css/news_news_list.css' %}"/>
 </head>
 
-<style>
-    @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
-    body {
-        background-color:#000000;
-    }
-    html,
-    .wrapper {
-      display: table;
-      height: 100%;
-      width: 100%;
-    }
-    .container-fostrap {
-      display: table-cell;
-      padding: 1em;
-      text-align: center;
-      vertical-align: middle;
-    }
-    .card-news {
-      display: block;
-        margin-bottom: 20px;
-        line-height: 1.42857143;
-        background-color: #fff;
-        border-radius: 2px;
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-        transition: box-shadow .25s;
-    }
-    .card-news:hover {
-      box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    }
-    .img-card {
-      width: 100%;
-      height:200px;
-      border-top-left-radius:2px;
-      border-top-right-radius:2px;
-      display:block;
-        overflow: hidden;
-    }
-    .img-card img{
-      width: 100%;
-      height: 200px;
-      object-fit:cover;
-      transition: all .25s ease;
-    }
-    .card-content {
-      padding:15px;
-      text-align:left;
-    }
-    .card-title {
-      margin-top:0px;
-      font-weight: 700;
-      font-size: 1.65em;
-    }
-    .card-title a {
-      color: #000;
-      text-decoration: none !important;
-    }
-</style>
 {% include "navbar.html" %}
 <body>
 
-<div class="header" style=" margin-top: 50px; flex-direction: column; align-items:center;text-align: center">
-    <h1 style="color: white">The most popular news from your country</h1>
-    <h4 style="color: white">Stay up to date with the world</h4>
+<div class="header">
+    <h1 class="header-text">The most popular news from your country</h1>
+    <h4 class="header-text">Stay up to date with the world</h4>
 </div>
 
 
@@ -84,7 +27,7 @@
                 <div class="row">
                     {% for article in news_articles %}
                     <div class="col-xs-12 col-sm-4">
-                        <div class="card-news" style="display: flex; flex-direction: column;">
+                        <div class="card-news">
                             <a class="img-card" href="{{ article.url }}"><img src="{{ article.image }}"/></a>
                             <div class="card-content">
                                 <h4 class="card-title">{{ article.title }}</h4>
