@@ -1,0 +1,26 @@
+body {
+    background-color: black;
+}
+.header {
+    margin-top: 200px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.header-text {
+    color: white;
+}
+form {
+    margin-top: 100px;
+    margin-bottom: 450px;
+    display: flex;
+    justify-content: center;
+}
+.group {
+    width: 500px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.messages-text {
+    color: red;
+}
