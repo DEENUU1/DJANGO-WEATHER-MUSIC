@@ -13,11 +13,22 @@
     body {
         background-color:#000000;
     }
-    html,
-    .wrapper {
+    html{
       display: table;
       height: 100%;
       width: 100%;
+    }
+    .spotify-frame {
+    display: flex;
+    justify-content: center;
+    }
+    section{
+    margin-top: 50px;
+    margin-bottom: 150px;
+    }
+    form{
+    margin-left: 12px;
+    margin-right: 12px;
     }
 </style>
 {% include "navbar.html" %}
@@ -54,16 +65,16 @@
                     <div class="d-flex">
                         <div class="temp-details flex-grow-1">
                             <p class="my-1">
-                                <span>Wind speed: {{wind_speed|floatformat:0}} km/h  </span>
+                                <span>Wind: {{wind_speed|floatformat:0}} km/h  </span>
                             </p>
                             <p class="my-1">
-                                <span>Sensed temperature: {{weather_feels|floatformat:0}}&deg; C   </span>
+                                <span>Sensed: {{weather_feels|floatformat:0}}&deg; C   </span>
                             </p>
                             <p class="my-1">
-                                <span>Maximum temperature: {{weather_max|floatformat:0}}&deg; C   </span>
+                                <span>Maximum: {{weather_max|floatformat:0}}&deg; C   </span>
                             </p>
                             <p class="my-1">
-                                <span>Minimum temperature: {{weather_min|floatformat:0}}&deg; C   </span>
+                                <span>Minimum: {{weather_min|floatformat:0}}&deg; C   </span>
                             </p>
                         </div>
                         <div>
@@ -72,7 +83,7 @@
                     </div>
                 </div>
                 <!-- ####################### SPOTIFY I FRAME ####################### -->
-                <div style="display: flex; justify-content: center;">
+                <div class="spotify-frame">
                     <div id="embed-iframe"></div>
                 </div>
                 <!-- ####################### SPOTIFY I FRAME ####################### -->
