@@ -1,17 +1,20 @@
-from dotenv import load_dotenv
 import os
 import base64
-from requests import post, get
+import random
 import json
 from dataclasses import dataclass
-import random
+from dotenv import load_dotenv
+from requests import post, get
 from . import playlists
 
 load_dotenv()
 
+""" This classes allows to connect with spotify API and return data """
+
 
 @dataclass
 class SpotifyData:
+    """ DATA CLASS FOR SPOTIFY ACCESS """
     CLIENT_ID: str = os.getenv('CLIENT_ID')
     CLIENT_SECRET: str = os.getenv('CLIENT_SECRET')
 
@@ -59,8 +62,7 @@ class SpotifyCategory(SpotifyAccess):
             playlist_url = json_result['external_urls']['spotify']
             playlist_image = json_result['images'][0]['url']
             return playlist_title, playlist_url, playlist_image
-        else:
-            raise Exception("Nie działa")
+        raise Exception("Nie działa")
 
     def random_playlist(self, token: str, weather_desc: str):
         """ This method allows to return random playlist based on the weather info """

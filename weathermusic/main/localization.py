@@ -1,9 +1,12 @@
-from requests import get
-from dotenv import load_dotenv
 import os
 import json
+from requests import get
+from dotenv import load_dotenv
+
 
 load_dotenv()
+
+""" Returning geolocation information from IP address"""
 
 
 class Geolocation:
