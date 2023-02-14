@@ -1,8 +1,8 @@
-from requests import get
-import json
-from dotenv import load_dotenv
 import os
 from dataclasses import dataclass
+import json
+from requests import get
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -27,7 +27,9 @@ class Weather:
         self.api_key = os.getenv('WEATHER_KEY')
 
     def get_weather(self, localization: str):
-        base_url = f'http://api.openweathermap.org/data/2.5/weather?appid={self.api_key}&q={localization}&units=metric&lang=en'
+        base_url = f'http://api.openweathermap.org/data/2.5/weather?appid=' \
+                   f'{self.api_key}&q=' \
+                   f'{localization}&units=metric&lang=en'
         result = get(base_url)
         json_result = json.loads(result.content)
 
@@ -50,5 +52,4 @@ class Weather:
                 icon=weather_icon,
 
             )
-        else:
-            raise Exception("Nie działa")
+        raise Exception("Nie działa")
