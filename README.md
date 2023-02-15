@@ -21,7 +21,7 @@ For more content you can register to the newsletter to get weakly interesting in
 
 ## Demo
 
-- [VIDEO DEMO ON YOUTUBE](https://youtu.be/LnE373sdkd0)
+- [VIDEO DEMO ON YOUTUBE](https://youtu.be/gVOYeAU3Fpo)
 
 <img src="/images/1.png"/>
 <img src="/images/2.png"/>
