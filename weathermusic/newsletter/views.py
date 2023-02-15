@@ -7,6 +7,7 @@ from django.views import View
 
 from .forms import RegisterForm, DeleteForm, NewsletterForm
 from .models import UserInfo
+from .mail import send_email
 
 
 class SendNewsletterView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -73,6 +74,14 @@ class SignUpView(View):
 
         if form.is_valid():
             form.save()
+
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+
+            send_email('newsletter_welcome.html',
+                       username,
+                       email)
+
             messages.success(request,
                              'Your account has been created')
             return redirect('weather_music:main')
