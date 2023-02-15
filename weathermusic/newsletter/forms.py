@@ -1,7 +1,8 @@
-from django.forms import ModelForm
-from .models import UserInfo
 from django import forms
+from django.forms import ModelForm
 from tinymce.widgets import TinyMCE
+
+from .models import UserInfo
 
 
 # subject, list of receivers and message to send a newsletter

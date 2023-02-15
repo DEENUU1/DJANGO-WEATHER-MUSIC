@@ -1,10 +1,12 @@
-import os
 import base64
-import random
 import json
+import os
+import random
 from dataclasses import dataclass
+
 from dotenv import load_dotenv
 from requests import post, get
+
 from . import playlists
 
 load_dotenv()

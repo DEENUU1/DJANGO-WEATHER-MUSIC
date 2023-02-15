@@ -1,11 +1,12 @@
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
+from django.views import View
+
 from .forms import RegisterForm, DeleteForm, NewsletterForm
 from .models import UserInfo
-from django.contrib import messages
-from django.core.mail import EmailMessage
-from django.conf import settings
-from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 class SendNewsletterView(LoginRequiredMixin, UserPassesTestMixin, View):

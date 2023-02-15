@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import UserInfo
 from import_export.admin import ExportActionMixin
+
+from .models import UserInfo
 
 
 @admin.register(UserInfo)

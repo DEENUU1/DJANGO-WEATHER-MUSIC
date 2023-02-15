@@ -1,8 +1,8 @@
-import os
 import json
-from requests import get
-from dotenv import load_dotenv
+import os
 
+from dotenv import load_dotenv
+from requests import get
 
 load_dotenv()
 
