@@ -1,8 +1,11 @@
-from django.shortcuts import render
-from .spotify import SpotifyCategory, SpotifyAccess
+from datetime import datetime
+
 from django.contrib import messages
-from .weather import Weather
+from django.shortcuts import render
+
 from .localization import Geolocation
+from .spotify import SpotifyCategory, SpotifyAccess
+from .weather import Weather
 
 
 def main_view(request):
@@ -12,6 +15,8 @@ def main_view(request):
     city_name = get_city_name(request)
     weather_info = get_weather_info(city_name, request)
     playlist_info = get_playlist_info(weather_info)
+    time = datetime.now()
+    time_format = time.strftime("%H:%M")
 
     context = {
         'playlist_title': playlist_info['playlist_title'],
@@ -25,6 +30,7 @@ def main_view(request):
         "weather_max": weather_info.max_temp,
         "weather_min": weather_info.min_temp,
         "wind_speed": weather_info.wind_speed,
+        "time": time_format,
     }
 
     return render(request,

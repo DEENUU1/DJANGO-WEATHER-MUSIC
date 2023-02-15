@@ -1,9 +1,12 @@
-from requests import get
-from dotenv import load_dotenv
-import os
 import json
+import os
+
+from dotenv import load_dotenv
+from requests import get
 
 load_dotenv()
+
+""" Returning geolocation information from IP address"""
 
 
 class Geolocation:
@@ -24,15 +27,24 @@ class Geolocation:
 
         return ip
 
-    def return_location(self, ip_address: str) -> str:
-        """ Method that is returning city name based on the IP """
+    def get_data(self, ip_address: str) -> json:
+        """ Method that is returning data based on the IP """
 
         base_url = f'https://ipgeolocation.abstractapi.com/v1/?api_key={self.api_key}'
         result = get(base_url)
         json_result = json.loads(result.content)
+        return json_result
 
-        if result.status_code == 200:
-            city_name = json_result["city"]
-            return city_name
-        else:
-            raise Exception('Nie działa')
+    def return_location(self, ip_address: str) -> str:
+        """ Method that is returning city name based on the IP """
+
+        json_result = self.get_data(ip_address)
+        city_name = json_result["city"]
+        return city_name
+
+    def return_country_code(self, ip_address: str) -> str:
+        """ Method that is returning country code based on the IP """
+
+        json_result = self.get_data(ip_address)
+        country_code = json_result["country_code"]
+        return country_code

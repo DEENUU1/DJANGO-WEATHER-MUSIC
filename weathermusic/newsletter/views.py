@@ -1,12 +1,12 @@
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
+from django.views import View
+
 from .forms import RegisterForm, DeleteForm, NewsletterForm
 from .models import UserInfo
-from django.contrib import messages
-from django.core.mail import EmailMessage
-from django.conf import settings
-from .mail import send_email
-from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 class SendNewsletterView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -35,11 +35,9 @@ class SendNewsletterView(LoginRequiredMixin, UserPassesTestMixin, View):
             mail.content_subtype = 'html'
             try:
                 mail.send()
-                print('email wysłany')
-                messages.success(request, "Wiadomość została wysłana")
+                messages.success(request, "Message was sent")
             except Exception as e:
-                print('nie udało się')
-                messages.error(request, "Nie udało się wysłać wiadomości: {}".format(e))
+                messages.error(request, "Failed to send message: {}".format(e))
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -68,25 +66,19 @@ class SignUpView(View):
 
         if UserInfo.objects.filter(email=form.data['email']).exists():
             messages.error(request,
-                           'Ten email jest już zarejestrowany')
+                           'This email is already registered')
             return render(request,
                           'newsletter_register.html',
                           {'form': form})
 
         if form.is_valid():
             form.save()
-
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            send_email('newsletter_welcome.html',
-                       username,
-                       email)
             messages.success(request,
-                             'Twoje konto zostało utworzone')
+                             'Your account has been created')
             return redirect('weather_music:main')
         else:
             messages.error(request,
-                           'Nie udało się założyć konta')
+                           'Account creation failed')
 
         return render(request, self.template_name, {'form': form})
 
@@ -111,14 +103,14 @@ class DeleteUserView(View):
                 user = UserInfo.objects.get(email=email)
                 user.delete()
                 messages.success(request,
-                                 'Usunięto konto')
+                                 'Account deleted')
                 return redirect('weather_music:main')
 
             except UserInfo.DoesNotExist:
                 messages.info(request,
-                              'To konto nie istnieje')
+                              'This account does not exist')
         else:
-            messages.error(request, 'Usuwanie konta nie powiodło się')
+            messages.error(request, 'Account deletion failed')
 
         return render(request,
                       self.template_name,

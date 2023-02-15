@@ -1,0 +1,24 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
+body {
+    background-color:#000000;
+}
+html{
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+.spotify-frame {
+    display: flex;
+    justify-content: center;
+}
+section{
+    margin-top: 50px;
+    margin-bottom: 150px;
+}
+form{
+    margin-left: 12px;
+    margin-right: 12px;
+}
+.card {
+    background-color: #D6D6D6;
+}

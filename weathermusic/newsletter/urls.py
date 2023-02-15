@@ -1,4 +1,5 @@
 from django.urls import path
+
 from .views import SignUpView, DeleteUserView, SendNewsletterView
 
 app_name = 'newsletter'

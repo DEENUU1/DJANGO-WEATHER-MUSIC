@@ -1,0 +1,45 @@
+{% load static %}
+<html lang="en">
+<head>
+    <title>WEATHER MUSIC | NEWS</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/news_news_list.css' %}"/>
+</head>
+
+{% include "navbar.html" %}
+<body>
+
+<div class="header">
+    <h1 class="header-text">The most popular news from your country</h1>
+    <h4 class="header-text">Stay up to date with the world</h4>
+</div>
+
+
+
+<!-- NEWS -->
+
+<section class="wrapper">
+    <div class="container-fostrap">
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    {% for article in news_articles %}
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="card-news">
+                            <a class="img-card" href="{{ article.url }}"><img src="{{ article.image }}"/></a>
+                            <div class="card-content">
+                                <h4 class="card-title">{{ article.title }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+{% include "footer.html" %}
+</html>
