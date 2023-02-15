@@ -1,11 +1,13 @@
-from unittest.mock import MagicMock, patch
 import datetime
+from unittest.mock import MagicMock, patch
+
 from django.test import SimpleTestCase, TestCase
 from django.urls import resolve, reverse
-from .views import main_view
-from .spotify import SpotifyCategory
-from .weather import Weather
+
 from .localization import Geolocation
+from .spotify import SpotifyCategory
+from .views import main_view
+from .weather import Weather
 
 
 class TestUrls(SimpleTestCase):

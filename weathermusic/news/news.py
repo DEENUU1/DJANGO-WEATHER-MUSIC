@@ -1,9 +1,10 @@
-from requests import get
 import json
-from dotenv import load_dotenv
 import os
 from dataclasses import dataclass
+
+from dotenv import load_dotenv
 from main.localization import Geolocation
+from requests import get
 
 load_dotenv()
 

@@ -1,8 +1,9 @@
 from django.test import SimpleTestCase, TestCase
 from django.urls import resolve, reverse
-from .views import DeleteUserView, SignUpView, SendNewsletterView
-from .models import UserInfo
+
 from .forms import NewsletterForm, DeleteForm
+from .models import UserInfo
+from .views import DeleteUserView, SignUpView, SendNewsletterView
 
 
 class TestUrls(SimpleTestCase):

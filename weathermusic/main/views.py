@@ -1,10 +1,11 @@
 from datetime import datetime
-from django.shortcuts import render
+
 from django.contrib import messages
+from django.shortcuts import render
+
+from .localization import Geolocation
 from .spotify import SpotifyCategory, SpotifyAccess
 from .weather import Weather
-from .localization import Geolocation
-
 
 
 def main_view(request):

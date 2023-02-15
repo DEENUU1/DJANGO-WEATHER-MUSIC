@@ -6,4 +6,4 @@ class NewsletterConfig(AppConfig):
     name = 'newsletter'
 
     def ready(self):
-        import newsletter.signals
+        pass

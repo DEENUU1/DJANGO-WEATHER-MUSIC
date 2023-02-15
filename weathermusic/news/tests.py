@@ -1,8 +1,10 @@
+from unittest.mock import MagicMock, patch
+
 from django.test import SimpleTestCase, TestCase
 from django.urls import resolve, reverse
-from unittest.mock import MagicMock, patch
+
+from .news import News
 from .views import news_list
-from .news import NewsInfo, News
 
 
 class TestUrls(SimpleTestCase):
