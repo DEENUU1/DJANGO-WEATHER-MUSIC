@@ -16,6 +16,7 @@ THUNDERSTORM_PLAYLISTS = [
 DRIZZLE_PLAYLISTS = [
     (1, '1xXd0NxUrssK2uki1HIVbb'),
     (2, '37i9dQZF1DXcC14V9ZdJ9I'),
+    (3, '5cNJGM9MuRo0hnJSmn7LWv'),
 ]
 
 RAIN_PLAYLISTS = [
@@ -34,19 +35,25 @@ SNOW_PLAYLISTS = [
 ]
 
 MIST_PLAYLISTS = [
-    (1, '3qvjuS5kBwdIUTJ8xd78Xg')
+    (1, '3qvjuS5kBwdIUTJ8xd78Xg'),
+    (2, '7MWBMlrwidebjrtkJ5IRMi'),
+    (3, '3KKKF29VPzTWMAr4b9qG8l'),
 ]
 
 SMOKE_PLAYLISTS = [
-    (1, '4pu0hpcPfKPna44Ee3ZRhy')
+    (1, '4pu0hpcPfKPna44Ee3ZRhy'),
+    (2, '5oW8fS6ro0YdZR1svGqajr'),
 ]
 
 HAZE_PLAYLISTS = [
-    (1, '6bR56iRdpsFKrYPeReXUzC')
+    (1, '6bR56iRdpsFKrYPeReXUzC'),
+    (2, '37i9dQZF1DZ06evO3Rodvq'),
 ]
 
 SAND_PLAYLISTS = [
-    (1, '0QR0OOsDIuL7sLFPcd0uG3')
+    (1, '0QR0OOsDIuL7sLFPcd0uG3'),
+    (2, '2yfxtauoEIpeBqApGJA9ya'),
+    (3, '7IGgZbBQiT4DThMyGxAlBX'),
 ]
 
 FOG_PLAYLISTS = [
@@ -66,7 +73,11 @@ SQUALLS_PLAYLISTS = [
 ]
 
 CLEAR_PLAYLISTS = [
-    (1, '1ioN4Mwrv6G7DGP2indDqK')
+    (1, '1ioN4Mwrv6G7DGP2indDqK'),
+    (2, '2hmLDliFT9mW84XHxRUzwx'),
+    (3, '5M6OSOdx9q2Pcp3oIgbvL9'),
+    (4, '3yZzmuf3FY318wPJsLdu3S'),
+    (5, '6afj5vDI8wGVNrUlRoSsg2'),
 ]
 
 WEATHER_PLAYLISTS = {
