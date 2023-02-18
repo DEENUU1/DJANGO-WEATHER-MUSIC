@@ -3,7 +3,7 @@ import os
 from dataclasses import dataclass
 
 from dotenv import load_dotenv
-from main.localization import Geolocation
+from main.localization import Geolocation, IPScraper
 from requests import get
 
 load_dotenv()
@@ -24,7 +24,8 @@ class News:
 
     def get_news(self, request):
         geolocation = Geolocation()
-        ip_address = geolocation.get_ipaddress(request)
+        ip_scraper = IPScraper()
+        ip_address = ip_scraper.get_ipaddress(request)
         country_code = geolocation.return_country_code(ip_address)
 
         base_url = f'https://newsapi.org/v2/top-headlines?country={country_code}&apiKey={self.api_key}'

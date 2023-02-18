@@ -66,7 +66,7 @@ class SpotifyCategory(SpotifyAccess):
             return playlist_title, playlist_url, playlist_image
         raise Exception("Nie działa")
 
-    def random_playlist(self, token: str, weather_desc: str):
+    def get_random_playlist(self, token: str, weather_desc: str):
         """ This method allows to return random playlist based on the weather info """
 
         for weather_key in playlists.WEATHER_PLAYLISTS.keys():
