@@ -60,10 +60,8 @@ class SpotifyCategory(SpotifyAccess):
         json_result = json.loads(result.content)
 
         if result.status_code == 200:
-            playlist_title = json_result['name']
             playlist_url = json_result['external_urls']['spotify']
-            playlist_image = json_result['images'][0]['url']
-            return playlist_title, playlist_url, playlist_image
+            return playlist_url
         raise Exception("Nie działa")
 
     def get_random_playlist(self, token: str, weather_desc: str):
@@ -72,5 +70,5 @@ class SpotifyCategory(SpotifyAccess):
         for weather_key in playlists.WEATHER_PLAYLISTS.keys():
             if weather_key in weather_desc:
                 playlist_id = random.choice(playlists.WEATHER_PLAYLISTS[weather_key])[1]
-                playlist_title, playlist_url, playlist_image = self._search_playlist(token, playlist_id)
-                return playlist_title, playlist_url, playlist_image
+                playlist_url = self._search_playlist(token, playlist_id)
+                return playlist_url

@@ -1,4 +1,6 @@
 import datetime
+import unittest
+import json
 from unittest.mock import MagicMock, patch
 
 from django.test import SimpleTestCase, TestCase
@@ -50,28 +52,29 @@ class MainViewTests(TestCase):
         self.assertTemplateUsed(response, 'index.html')
         self.assertEqual(response.context['playlist_title'], 'London Cloudy Playlist')
 
+class TestLocalization(unittest.TestCase):
 
-class TestSpotify(TestCase):
+    @patch('main.localization.Geolocation._get_ipAddress_information')
+    def test_return_localization_success(self, mock_get_information):
+        mock_get_information.return_value = {'city': 'Warsaw'}
+        self.assertEqual(Geolocation().return_location('192.168.0.1'), 'Warsaw')
 
-    def setUp(self) -> None:
-        self.token = "dsadasdqeasjasidjasidjasijdasidjas"
-        self.playlist_id = "dsasdasdas9di9asid9as"
-        self.playlist_title = "Wiosenne wibracje"
-        self.playlist_url = "spotify.com/asdasdasdad/d"
-        self.playlist_image = "dasd.jpg"
-        self.spotify = SpotifyCategory()
+    @patch('main.localization.Geolocation._get_ipAddress_information')
+    def test_return_country_code(self, mock_get_country_code):
+        mock_get_country_code.return_value = {'country_code': 'PL'}
+        self.assertEqual(Geolocation().return_country_code('192.168.0.1'), 'PL')
 
-    @patch('main.spotify.SpotifyCategory._search_playlist')
-    def test_playlist_search_playlist(self, mock_search_playlist):
-        mock_search_playlist.return_value = (
-            self.playlist_title, self.playlist_url, self.playlist_image)
+    def test_get_ipAddress_information(self):
+        json_data = {'city': 'Lodz', 'country_code': 'PL'}
+        mock_result = MagicMock()
+        mock_result.content = json.dumps(json_data).encode('utf-8')
 
-        playlist_title, playlist_url, playlist_image = self.spotify._search_playlist(
-            self.token, self.playlist_id)
+        with patch('main.localization.get', return_value=mock_result):
+            result = Geolocation()._get_ipAddress_information('192.168.0.1')
+            self.assertEqual(result, json_data)
 
-        self.assertEqual(playlist_title, 'Wiosenne wibracje')
-        self.assertEqual(playlist_url, 'spotify.com/asdasdasdad/d')
-        self.assertEqual(playlist_image, 'dasd.jpg')
+
+
 
 
 class TestWeather(TestCase):
@@ -101,29 +104,8 @@ class TestWeather(TestCase):
         self.assertEqual(weather_data.wind_speed, 5)
 
 
-class TestGeolocation(TestCase):
 
-    def setUp(self) -> None:
-        self.api_key = "adsasdasdas8d8as9das89"
-        self.ip_address = '127.0.0.1'
 
-    @patch('main.localization.Geolocation.get_data')
-    def test_return_localization(self, mock_get_data):
-        mock_get_data.return_value = {
-            "city": "Warsaw",
-        }
 
-        geolocation = Geolocation()
-        geolocation_location = geolocation.return_location(self.ip_address)
 
-        self.assertEqual(geolocation_location, "Warsaw")
 
-    @patch('main.localization.Geolocation.get_data')
-    def test_return_country_code(self, mock_get_data):
-        mock_get_data.return_value = {
-            "country_code": "PL",
-        }
-        geolocation = Geolocation()
-        geolocation_location = geolocation.return_country_code(self.ip_address)
-
-        self.assertEqual(geolocation_location, "PL")
