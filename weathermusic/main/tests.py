@@ -1,11 +1,14 @@
 import datetime
+import unittest
+import json
+import responses
 from unittest.mock import MagicMock, patch
 
 from django.test import SimpleTestCase, TestCase
 from django.urls import resolve, reverse
 
 from .localization import Geolocation
-from .spotify import SpotifyCategory
+from .spotify import SpotifyCategory, SpotifyAccess
 from .views import main_view
 from .weather import Weather
 
@@ -38,9 +41,7 @@ class MainViewTests(TestCase):
         )
         # mock to return spotify playlist info
         mock_playlist_info.return_value = {
-            'playlist_title': 'London Cloudy Playlist',
             'playlist_url': 'https://londoncloudy.com',
-            'playlist_image': 'cloudy.jpg'
         }
         # mock to return user local time
         mock_datetime.now.return_value = datetime.datetime(2023, 2, 11, 11, 0)
@@ -48,82 +49,57 @@ class MainViewTests(TestCase):
         response = self.client.get(reverse('weather_music:main'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
-        self.assertEqual(response.context['playlist_title'], 'London Cloudy Playlist')
 
 
-class TestSpotify(TestCase):
+class TestLocalization(unittest.TestCase):
 
-    def setUp(self) -> None:
-        self.token = "dsadasdqeasjasidjasidjasijdasidjas"
-        self.playlist_id = "dsasdasdas9di9asid9as"
-        self.playlist_title = "Wiosenne wibracje"
-        self.playlist_url = "spotify.com/asdasdasdad/d"
-        self.playlist_image = "dasd.jpg"
-        self.spotify = SpotifyCategory()
+    @patch('main.localization.Geolocation._get_ipAddress_information')
+    def test_return_localization_success(self, mock_get_information):
+        mock_get_information.return_value = {'city': 'Warsaw'}
+        self.assertEqual(Geolocation().return_location('192.168.0.1'), 'Warsaw')
 
-    @patch('main.spotify.SpotifyCategory._search_playlist')
-    def test_playlist_search_playlist(self, mock_search_playlist):
-        mock_search_playlist.return_value = (
-            self.playlist_title, self.playlist_url, self.playlist_image)
+    @patch('main.localization.Geolocation._get_ipAddress_information')
+    def test_return_country_code(self, mock_get_country_code):
+        mock_get_country_code.return_value = {'country_code': 'PL'}
+        self.assertEqual(Geolocation().return_country_code('192.168.0.1'), 'PL')
 
-        playlist_title, playlist_url, playlist_image = self.spotify._search_playlist(
-            self.token, self.playlist_id)
+    def test_get_ipAddress_information(self):
+        json_data = {'city': 'Lodz', 'country_code': 'PL'}
+        mock_result = MagicMock()
+        mock_result.content = json.dumps(json_data).encode('utf-8')
 
-        self.assertEqual(playlist_title, 'Wiosenne wibracje')
-        self.assertEqual(playlist_url, 'spotify.com/asdasdasdad/d')
-        self.assertEqual(playlist_image, 'dasd.jpg')
+        with patch('main.localization.get', return_value=mock_result):
+            result = Geolocation()._get_ipAddress_information('192.168.0.1')
+            self.assertEqual(result, json_data)
 
 
-class TestWeather(TestCase):
+class TestWeather(unittest.TestCase):
 
-    def setUp(self) -> None:
-        self.localization = "Poland"
+    @patch('main.weather.get')
+    def test_get_weather(self, mock_get):
+        json_data = {'main': {'temp': 20, 'feels_like': 18, 'temp_min': 15, 'temp_max': 25},
+                     'wind': {'speed': 5}, 'weather': [{'description': 'sunny', 'icon': '01d'}]}
 
-    @patch('main.weather.Weather.get_weather')
-    def test_return_weather_data(self, mock_get_weather):
-        mock_get_weather.return_value = MagicMock(
-            temp=10,
-            desc='cloud',
-            icon='cloud.png',
-            feels_like=8,
-            max_temp=12,
-            min_temp=5,
-            wind_speed=5
+        mock_result = MagicMock()
+        mock_result.content = json.dumps(json_data).encode('utf=8')
+        mock_result.status_code = 200
+        mock_get.return_value = mock_result
+
+        result = Weather().get_weather('Poland')
+        self.assertEqual(result.temp, 20)
+        self.assertEqual(result.desc, 'sunny')
+        self.assertNotEqual(result.feels_like, '20')
+
+
+class TestSpotify(unittest.TestCase, SpotifyAccess):
+
+    @responses.activate
+    def test_search_playlist_success(self):
+        responses.get(
+            url=f"https://api.spotify.com/v1/playlists/6afj5vDI8wGVNrUlRoSsg2",
+            json={'external_urls': {'spotify': 'https://testplaylisturl.com'}},
+            status=200,
         )
-        weather = Weather()
-        weather_data = weather.get_weather(self.localization)
-        self.assertEqual(weather_data.temp, 10)
-        self.assertEqual(weather_data.desc, 'cloud')
-        self.assertEqual(weather_data.icon, 'cloud.png')
-        self.assertEqual(weather_data.feels_like, 8)
-        self.assertEqual(weather_data.max_temp, 12)
-        self.assertEqual(weather_data.min_temp, 5)
-        self.assertEqual(weather_data.wind_speed, 5)
 
-
-class TestGeolocation(TestCase):
-
-    def setUp(self) -> None:
-        self.api_key = "adsasdasdas8d8as9das89"
-        self.ip_address = '127.0.0.1'
-
-    @patch('main.localization.Geolocation.get_data')
-    def test_return_localization(self, mock_get_data):
-        mock_get_data.return_value = {
-            "city": "Warsaw",
-        }
-
-        geolocation = Geolocation()
-        geolocation_location = geolocation.return_location(self.ip_address)
-
-        self.assertEqual(geolocation_location, "Warsaw")
-
-    @patch('main.localization.Geolocation.get_data')
-    def test_return_country_code(self, mock_get_data):
-        mock_get_data.return_value = {
-            "country_code": "PL",
-        }
-        geolocation = Geolocation()
-        geolocation_location = geolocation.return_country_code(self.ip_address)
-
-        self.assertEqual(geolocation_location, "PL")
+        self.assertEqual(SpotifyCategory._search_playlist(self,'test', '6afj5vDI8wGVNrUlRoSsg2'),
+                         'https://testplaylisturl.com')
