@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib import messages
 from django.shortcuts import render
 
-from .localization import Geolocation
+from .localization import Geolocation, IPScraper
 from .spotify import SpotifyCategory, SpotifyAccess
 from .weather import Weather
 
@@ -19,9 +19,7 @@ def main_view(request):
     time_format = time.strftime("%H:%M")
 
     context = {
-        'playlist_title': playlist_info['playlist_title'],
         'playlist_url': playlist_info['playlist_url'],
-        'playlist_image': playlist_info['playlist_image'],
         'weather_city': city_name,
         'weather_temp': weather_info.temp,
         'weather_desc': weather_info.desc,
@@ -42,7 +40,8 @@ def get_city_name(request):
     """ This function allows to get geolocation by ip address or from HTML form"""
 
     geolocation = Geolocation()
-    ip_address = geolocation.get_ipaddress(request)
+    ip_scraper = IPScraper()
+    ip_address = ip_scraper.get_ipaddress(request)
 
     if request.method == 'POST':
         city_name = request.POST['city']
@@ -74,10 +73,8 @@ def get_playlist_info(weather_info: str):
     token = spotify_api._get_token()
     spotify_func = SpotifyCategory()
 
-    playlist_title, playlist_url, playlist_image = spotify_func.random_playlist(token, weather_info.desc)
+    playlist_url= spotify_func.get_random_playlist(token, weather_info.desc)
 
     return {
-        'playlist_title': playlist_title,
         'playlist_url': playlist_url,
-        'playlist_image': playlist_image
     }
