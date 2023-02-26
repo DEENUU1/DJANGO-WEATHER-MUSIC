@@ -53,4 +53,5 @@ class Weather:
                 icon=weather_icon,
 
             )
-        raise Exception("Nie działa")
+        else:
+            raise Exception("Nie działa")
